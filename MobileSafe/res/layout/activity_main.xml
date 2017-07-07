@@ -1,26 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/launcher_bg" >
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tv_version"
+    <RatingBar
+        android:id="@+id/ratingBar1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:shadowColor="#f00"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="1"
-        android:text="@string/hello_world"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content" />
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_version"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>
+</LinearLayout>

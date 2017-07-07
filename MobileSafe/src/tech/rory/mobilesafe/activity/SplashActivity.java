@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AliasActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 
 import android.content.pm.PackageInfo;
@@ -41,6 +42,7 @@ public class SplashActivity extends Activity {
 	protected static final int CODE_URL_ERROR = 1;
 	protected static final int CODE_NET_ERROR = 2;
 	protected static final int CODE_JSON_ERROR = 3;
+	protected static final int CODE_ENTER_HOME = 4;
 	private TextView tvVersion;
 	private String urlAddress = "http://10.120.1.156:9090/update.json";
 	// private String urlAddress = "http://192.168.31.212:8080/update.json";
@@ -73,6 +75,9 @@ public class SplashActivity extends Activity {
 				Toast.makeText(SplashActivity.this, "Read data error",
 						Toast.LENGTH_LONG).show();
 				break;
+			case CODE_ENTER_HOME:
+				enterHome();
+				break;
 			}
 		}
 
@@ -81,7 +86,7 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_splash);
 		tvVersion = (TextView) findViewById(R.id.tv_version);
 		tvVersion.setText("Version:" + getVersionName());
 		checkVersion();
@@ -142,6 +147,7 @@ public class SplashActivity extends Activity {
 	 * 用来检查软件的版本信息。
 	 */
 	private void checkVersion() {
+		final long startTime = System.currentTimeMillis();
 		// 启动子线程异步加载
 		new Thread() {
 
@@ -201,21 +207,35 @@ public class SplashActivity extends Activity {
 							// showUpdateDailog();
 
 						} else {
+							message.what = CODE_ENTER_HOME;
 							Log.e("NetWork Status", responseCode + "");
 						}
 					}
 				} catch (MalformedURLException e) {
 					message.what = CODE_URL_ERROR;
+					enterHome();
 					e.printStackTrace();
 				} catch (IOException e) {
 					message.what = CODE_NET_ERROR;
+					enterHome();
 					e.printStackTrace();
 				} catch (JSONException e) {
 					message.what = CODE_JSON_ERROR;
-					// TODO Auto-generated catch block
+					enterHome();
 					e.printStackTrace();
 
 				} finally {
+					long endTime = System.currentTimeMillis();
+					long timeUse = endTime - startTime;
+
+					// wait 2s for show splash page.
+					if (timeUse < 2000) {
+						try {
+							Thread.sleep(2000 - timeUse);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 					mHanler.sendMessage(message);
 					if (openConnection != null) {
 						openConnection.disconnect();
@@ -227,6 +247,9 @@ public class SplashActivity extends Activity {
 
 	}
 
+	/**
+	 * Update dialog.
+	 */
 	protected void showUpdateDailog() {
 		// Create builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -243,10 +266,26 @@ public class SplashActivity extends Activity {
 
 			}
 		});
-		builder.setNegativeButton("Later", null);
+		builder.setNegativeButton("Later", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				enterHome();
+
+			}
+		});
 
 		builder.show();
 
 	}
 
+	/**
+	 * 进入主界面
+	 * 
+	 */
+	private void enterHome() {
+		Intent intent = new Intent(this, HomeActivity.class);
+		startActivity(intent);
+		finish();
+	}
 }
