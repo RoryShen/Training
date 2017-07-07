@@ -77,15 +77,18 @@ public class SplashActivity extends Activity {
 			case CODE_URL_ERROR:
 				Toast.makeText(SplashActivity.this, "URL error",
 						Toast.LENGTH_LONG).show();
+				enterHome();
 
 				break;
 			case CODE_NET_ERROR:
 				Toast.makeText(SplashActivity.this, "Network error",
 						Toast.LENGTH_LONG).show();
+				enterHome();
 				break;
 			case CODE_JSON_ERROR:
 				Toast.makeText(SplashActivity.this, "Read data error",
 						Toast.LENGTH_LONG).show();
+				enterHome();
 				break;
 			case CODE_ENTER_HOME:
 				enterHome();
@@ -226,15 +229,15 @@ public class SplashActivity extends Activity {
 					}
 				} catch (MalformedURLException e) {
 					message.what = CODE_URL_ERROR;
-					enterHome();
+
 					e.printStackTrace();
 				} catch (IOException e) {
 					message.what = CODE_NET_ERROR;
-					enterHome();
+
 					e.printStackTrace();
 				} catch (JSONException e) {
 					message.what = CODE_JSON_ERROR;
-					enterHome();
+
 					e.printStackTrace();
 
 				} finally {
@@ -248,7 +251,9 @@ public class SplashActivity extends Activity {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						System.out.println("AAAB" + timeUse);
 					}
+					System.out.println("AAAA" + timeUse);
 					mHanler.sendMessage(message);
 					if (openConnection != null) {
 						openConnection.disconnect();
