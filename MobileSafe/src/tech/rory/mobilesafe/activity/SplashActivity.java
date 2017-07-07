@@ -39,6 +39,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -54,8 +55,8 @@ public class SplashActivity extends Activity {
 	protected static final int CODE_ENTER_HOME = 4;
 	private TextView tvVersion;
 	private TextView tvProgressTextView;
-	private String urlAddress = "http://10.120.1.156:9090/update.json";
-	// private String urlAddress = "http://192.168.31.212:8080/update.json";
+	//private String urlAddress = "http://10.120.1.156:9090/update.json";
+	private String urlAddress = "http://192.168.31.212:8080/update.json";
 
 	// ---bleow info from server.
 	// Version name
@@ -75,19 +76,16 @@ public class SplashActivity extends Activity {
 
 				break;
 			case CODE_URL_ERROR:
-				Toast.makeText(SplashActivity.this, "URL error",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(SplashActivity.this, "URL error", Toast.LENGTH_LONG).show();
 				enterHome();
 
 				break;
 			case CODE_NET_ERROR:
-				Toast.makeText(SplashActivity.this, "Network error",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(SplashActivity.this, "Network error", Toast.LENGTH_LONG).show();
 				enterHome();
 				break;
 			case CODE_JSON_ERROR:
-				Toast.makeText(SplashActivity.this, "Read data error",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(SplashActivity.this, "Read data error", Toast.LENGTH_LONG).show();
 				enterHome();
 				break;
 			case CODE_ENTER_HOME:
@@ -114,8 +112,7 @@ public class SplashActivity extends Activity {
 		try {
 			// 获取包里的信息
 
-			PackageInfo packageInfo = packageManager.getPackageInfo(
-					getPackageName(), 0);
+			PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
 
 			// 读取版本信息和版本名字
 			int versionCode = packageInfo.versionCode;
@@ -142,8 +139,7 @@ public class SplashActivity extends Activity {
 		PackageManager packageManager = getPackageManager();
 		try {
 			// 获取包里的信息
-			PackageInfo packageInfo = packageManager.getPackageInfo(
-					getPackageName(), 0);
+			PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
 
 			// 读取版本信息和版本名字
 			int versionCode = packageInfo.versionCode;
@@ -193,11 +189,9 @@ public class SplashActivity extends Activity {
 					// Check the resopnse code
 					if (responseCode == 200) {
 
-						InputStream inputStream = openConnection
-								.getInputStream();
+						InputStream inputStream = openConnection.getInputStream();
 						// Read the Stream message.
-						String readFormStream = StreamUtils
-								.readFormStream(inputStream);
+						String readFormStream = StreamUtils.readFormStream(inputStream);
 						Log.i("Network status", readFormStream);
 						// System.out.println("Network status" +
 						// readFormStream);
@@ -251,7 +245,7 @@ public class SplashActivity extends Activity {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						System.out.println("AAAB" + timeUse);
+						
 					}
 					System.out.println("AAAA" + timeUse);
 					mHanler.sendMessage(message);
@@ -313,43 +307,41 @@ public class SplashActivity extends Activity {
 	 * 
 	 */
 	protected void download() {
-		if (Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			tvProgressTextView.setVisibility(View.VISIBLE);
-			final String target = Environment.getExternalStorageDirectory()
-					+ "/update.apk";
+			final String target = Environment.getExternalStorageDirectory()+"/update.apk";
 			HttpUtils uHttpUtils = new HttpUtils();
-			uHttpUtils.download(mDownloadURL, target,
-					new RequestCallBack<File>() {
+			uHttpUtils.download(mDownloadURL, target, new RequestCallBack<File>() {
 
-						@Override
-						public void onSuccess(ResponseInfo<File> arg0) {
-							Toast.makeText(SplashActivity.this,
-									"Donwloading Success! See:" + target,
-									Toast.LENGTH_LONG).show();
-						}
+				@Override
+				public void onSuccess(ResponseInfo<File> arg0) {
+					Toast.makeText(SplashActivity.this, "Donwloading Success! See:" + target, Toast.LENGTH_LONG).show();
+					// Switch to System App install page.
 
-						@Override
-						public void onFailure(HttpException arg0, String arg1) {
-							Toast.makeText(SplashActivity.this,
-									"Donwloading Fail!" + mDownloadURL,
-									Toast.LENGTH_LONG).show();
-						}
+					
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					
+					intent.addCategory(Intent.CATEGORY_DEFAULT);
+					intent.setDataAndType(Uri.fromFile(arg0.result), "application/vnd.android.package-archive");
+					startActivity(intent);
+				}
 
-						@Override
-						public void onLoading(long total, long current,
-								boolean isUploading) {
+				@Override
+				public void onFailure(HttpException arg0, String arg1) {
+					Toast.makeText(SplashActivity.this, "Donwloading Fail!" + mDownloadURL, Toast.LENGTH_LONG).show();
+				}
 
-							super.onLoading(total, current, isUploading);
-							tvProgressTextView.setText("Download Process: "
-									+ current * 100 / total + "%");
-							Log.i("Download Process", current + "/" + total);
-						}
+				@Override
+				public void onLoading(long total, long current, boolean isUploading) {
 
-					});
+					super.onLoading(total, current, isUploading);
+					tvProgressTextView.setText("Download Process: " + current * 100 / total + "%");
+					Log.i("Download Process", current + "/" + total);
+				}
+
+			});
 		} else {
-			Toast.makeText(SplashActivity.this, "Please insert sd card",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(SplashActivity.this, "Please insert sd card", Toast.LENGTH_LONG).show();
 		}
 
 	}
