@@ -1,5 +1,6 @@
 package tech.rory.mobilesafe.activity;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -12,6 +13,12 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+
 import tech.rory.mobilesafe.R;
 import tech.rory.mobilesafe.R.id;
 import tech.rory.mobilesafe.R.layout;
@@ -19,6 +26,7 @@ import tech.rory.mobilesafe.utils.StreamUtils;
 
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
@@ -33,6 +41,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +53,7 @@ public class SplashActivity extends Activity {
 	protected static final int CODE_JSON_ERROR = 3;
 	protected static final int CODE_ENTER_HOME = 4;
 	private TextView tvVersion;
+	private TextView tvProgressTextView;
 	private String urlAddress = "http://10.120.1.156:9090/update.json";
 	// private String urlAddress = "http://192.168.31.212:8080/update.json";
 
@@ -60,7 +70,9 @@ public class SplashActivity extends Activity {
 			switch (msg.what) {
 			case CODE_UPDATE_DIALOG:
 				Log.d("VVV", "aaa");
+
 				showUpdateDailog();
+
 				break;
 			case CODE_URL_ERROR:
 				Toast.makeText(SplashActivity.this, "URL error",
@@ -89,6 +101,7 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		tvVersion = (TextView) findViewById(R.id.tv_version);
 		tvVersion.setText("Version:" + getVersionName());
+		tvProgressTextView = (TextView) findViewById(R.id.tv_progress);
 		checkVersion();
 	}
 
@@ -263,6 +276,7 @@ public class SplashActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Log.i("Update?", "Update");
+				download();
 
 			}
 		});
@@ -287,5 +301,51 @@ public class SplashActivity extends Activity {
 		Intent intent = new Intent(this, HomeActivity.class);
 		startActivity(intent);
 		finish();
+	}
+
+	/**
+	 * Download
+	 * 
+	 */
+	protected void download() {
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			tvProgressTextView.setVisibility(View.VISIBLE);
+			final String target = Environment.getExternalStorageDirectory()
+					+ "/update.apk";
+			HttpUtils uHttpUtils = new HttpUtils();
+			uHttpUtils.download(mDownloadURL, target,
+					new RequestCallBack<File>() {
+
+						@Override
+						public void onSuccess(ResponseInfo<File> arg0) {
+							Toast.makeText(SplashActivity.this,
+									"Donwloading Success! See:" + target,
+									Toast.LENGTH_LONG).show();
+						}
+
+						@Override
+						public void onFailure(HttpException arg0, String arg1) {
+							Toast.makeText(SplashActivity.this,
+									"Donwloading Fail!" + mDownloadURL,
+									Toast.LENGTH_LONG).show();
+						}
+
+						@Override
+						public void onLoading(long total, long current,
+								boolean isUploading) {
+
+							super.onLoading(total, current, isUploading);
+							tvProgressTextView.setText("Download Process: "
+									+ current * 100 / total + "%");
+							Log.i("Download Process", current + "/" + total);
+						}
+
+					});
+		} else {
+			Toast.makeText(SplashActivity.this, "Please insert sd card",
+					Toast.LENGTH_LONG).show();
+		}
+
 	}
 }
