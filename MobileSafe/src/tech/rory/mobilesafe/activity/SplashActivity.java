@@ -9,19 +9,16 @@ import java.net.URLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
 import org.json.JSONException;
 import org.json.JSONObject;
 
-=======
->>>>>>>  complete network connection
 import tech.rory.mobilesafe.R;
 import tech.rory.mobilesafe.R.id;
 import tech.rory.mobilesafe.R.layout;
 import tech.rory.mobilesafe.utils.StreamUtils;
 
 import android.os.Bundle;
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
+
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
@@ -29,9 +26,7 @@ import android.app.AlertDialog;
 import android.app.AliasActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-=======
-import android.app.Activity;
->>>>>>>  complete network connection
+
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -41,14 +36,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SplashActivity extends Activity {
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
+
 	protected static final int CODE_UPDATE_DIALOG = 0;
 	protected static final int CODE_URL_ERROR = 1;
 	protected static final int CODE_NET_ERROR = 2;
 	protected static final int CODE_JSON_ERROR = 3;
 	private TextView tvVersion;
-	// private String urlAddress="http://10.120.1.156:9090/update.json";
-	private String urlAddress = "http://192.168.31.212:8080/update.json";
+	private String urlAddress = "http://10.120.1.156:9090/update.json";
+	// private String urlAddress = "http://192.168.31.212:8080/update.json";
 
 	// ---bleow info from server.
 	// Version name
@@ -62,25 +57,26 @@ public class SplashActivity extends Activity {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case CODE_UPDATE_DIALOG:
+				Log.d("VVV", "aaa");
 				showUpdateDailog();
 				break;
 			case CODE_URL_ERROR:
-				Toast.makeText(SplashActivity.this, "URL error", Toast.LENGTH_LONG).show();
+				Toast.makeText(SplashActivity.this, "URL error",
+						Toast.LENGTH_LONG).show();
 
 				break;
 			case CODE_NET_ERROR:
-				Toast.makeText(SplashActivity.this, "Network error", Toast.LENGTH_LONG).show();
+				Toast.makeText(SplashActivity.this, "Network error",
+						Toast.LENGTH_LONG).show();
 				break;
 			case CODE_JSON_ERROR:
-				Toast.makeText(SplashActivity.this, "Read data error", Toast.LENGTH_LONG).show();
+				Toast.makeText(SplashActivity.this, "Read data error",
+						Toast.LENGTH_LONG).show();
 				break;
 			}
 		}
 
 	};
-=======
-	private TextView tvVersion;
->>>>>>>  complete network connection
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +92,9 @@ public class SplashActivity extends Activity {
 		PackageManager packageManager = getPackageManager();
 		try {
 			// 获取包里的信息
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
-			PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
-=======
+
 			PackageInfo packageInfo = packageManager.getPackageInfo(
 					getPackageName(), 0);
->>>>>>>  complete network connection
 
 			// 读取版本信息和版本名字
 			int versionCode = packageInfo.versionCode;
@@ -118,7 +111,7 @@ public class SplashActivity extends Activity {
 	}
 
 	/**
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
+	 * 
 	 * Get version code.
 	 * 
 	 * @return
@@ -128,7 +121,8 @@ public class SplashActivity extends Activity {
 		PackageManager packageManager = getPackageManager();
 		try {
 			// 获取包里的信息
-			PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
+			PackageInfo packageInfo = packageManager.getPackageInfo(
+					getPackageName(), 0);
 
 			// 读取版本信息和版本名字
 			int versionCode = packageInfo.versionCode;
@@ -144,14 +138,12 @@ public class SplashActivity extends Activity {
 	}
 
 	/**
-=======
->>>>>>>  complete network connection
+	 * 
 	 * 用来检查软件的版本信息。
 	 */
 	private void checkVersion() {
 		// 启动子线程异步加载
 		new Thread() {
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
 
 			private HttpURLConnection openConnection;
 
@@ -163,16 +155,7 @@ public class SplashActivity extends Activity {
 					// 定义服务器地址
 					URL url = new URL(urlAddress);
 					openConnection = (HttpURLConnection) url.openConnection();
-=======
-			@Override
-			public void run() {
-				try {
-					// 定义服务器地址
-					URL url = new URL("http://10.120.1.156:9090/update.json");
-					// 打开网络连接
-					HttpURLConnection openConnection = (HttpURLConnection) url
-							.openConnection();
->>>>>>>  complete network connection
+
 					// 设置请求方法
 					openConnection.setRequestMethod("GET");
 					// Set max connect time.
@@ -187,10 +170,12 @@ public class SplashActivity extends Activity {
 
 					// Check the resopnse code
 					if (responseCode == 200) {
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
-						InputStream inputStream = openConnection.getInputStream();
+
+						InputStream inputStream = openConnection
+								.getInputStream();
 						// Read the Stream message.
-						String readFormStream = StreamUtils.readFormStream(inputStream);
+						String readFormStream = StreamUtils
+								.readFormStream(inputStream);
 						Log.i("Network status", readFormStream);
 						// System.out.println("Network status" +
 						// readFormStream);
@@ -211,7 +196,6 @@ public class SplashActivity extends Activity {
 						if (mVersionCode > getVersionCode()) {
 							/*
 							 * 如果服务器上的代码比本地的新，那么久需要弹出更新提
-							 * 
 							 */
 							message.what = CODE_UPDATE_DIALOG;
 							// showUpdateDailog();
@@ -236,30 +220,13 @@ public class SplashActivity extends Activity {
 					if (openConnection != null) {
 						openConnection.disconnect();
 					}
-=======
-						InputStream inputStream = openConnection
-								.getInputStream();
-						// Read the Stream message.
-						String readFormStream = StreamUtils.readFormStream(inputStream);
-						Log.e("Network status",readFormStream);
-						System.out.println("Network status"+readFormStream);
-					}else{
-						Log.e("NetWork Status",responseCode+"");
-					}
-				} catch (MalformedURLException e) {
 
-					e.printStackTrace();
-				} catch (IOException e) {
-
-					e.printStackTrace();
->>>>>>>  complete network connection
 				}
 			}
 		}.start();
 
 	}
 
-<<<<<<< e5a61c39df59a32643e9bde770580e88f6ed8d45
 	protected void showUpdateDailog() {
 		// Create builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -282,6 +249,4 @@ public class SplashActivity extends Activity {
 
 	}
 
-=======
->>>>>>>  complete network connection
 }
