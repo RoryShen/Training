@@ -29,11 +29,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager.OnActivityResultListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AliasActivity;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 
 import android.content.pm.PackageInfo;
@@ -55,7 +58,7 @@ public class SplashActivity extends Activity {
 	protected static final int CODE_ENTER_HOME = 4;
 	private TextView tvVersion;
 	private TextView tvProgressTextView;
-	//private String urlAddress = "http://10.120.1.156:9090/update.json";
+	// private String urlAddress = "http://10.120.1.156:9090/update.json";
 	private String urlAddress = "http://192.168.31.212:8080/update.json";
 
 	// ---bleow info from server.
@@ -245,7 +248,7 @@ public class SplashActivity extends Activity {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						
+
 					}
 					System.out.println("AAAA" + timeUse);
 					mHanler.sendMessage(message);
@@ -270,6 +273,8 @@ public class SplashActivity extends Activity {
 
 		// Set the message.
 		builder.setMessage(mDesc);
+		
+		//处理更新选项
 		builder.setPositiveButton("Update NoW", new OnClickListener() {
 
 			@Override
@@ -279,6 +284,8 @@ public class SplashActivity extends Activity {
 
 			}
 		});
+		
+		//处理稍后选项
 		builder.setNegativeButton("Later", new OnClickListener() {
 
 			@Override
@@ -286,6 +293,17 @@ public class SplashActivity extends Activity {
 				enterHome();
 
 			}
+
+		});
+		
+		// 对取消操作进行处理
+		builder.setOnCancelListener(new OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				enterHome();
+			}
+
 		});
 
 		builder.show();
@@ -309,7 +327,7 @@ public class SplashActivity extends Activity {
 	protected void download() {
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			tvProgressTextView.setVisibility(View.VISIBLE);
-			final String target = Environment.getExternalStorageDirectory()+"/update.apk";
+			final String target = Environment.getExternalStorageDirectory() + "/update.apk";
 			HttpUtils uHttpUtils = new HttpUtils();
 			uHttpUtils.download(mDownloadURL, target, new RequestCallBack<File>() {
 
@@ -318,13 +336,17 @@ public class SplashActivity extends Activity {
 					Toast.makeText(SplashActivity.this, "Donwloading Success! See:" + target, Toast.LENGTH_LONG).show();
 					// Switch to System App install page.
 
-					
 					Intent intent = new Intent(Intent.ACTION_VIEW);
-					
+
 					intent.addCategory(Intent.CATEGORY_DEFAULT);
 					intent.setDataAndType(Uri.fromFile(arg0.result), "application/vnd.android.package-archive");
-					startActivity(intent);
+					//startActivity(intent);
+					
+					//get the result form activity.by call onActivityResult();
+					startActivityForResult(intent, 0);
+					
 				}
+				
 
 				@Override
 				public void onFailure(HttpException arg0, String arg1) {
@@ -344,5 +366,12 @@ public class SplashActivity extends Activity {
 			Toast.makeText(SplashActivity.this, "Please insert sd card", Toast.LENGTH_LONG).show();
 		}
 
+	}
+	
+	//Get the result form activity
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		enterHome();
 	}
 }
