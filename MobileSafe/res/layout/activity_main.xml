@@ -4,9 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RatingBar
-        android:id="@+id/ratingBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#8866ff00"
+        android:gravity="center"
+        android:text="功能列表"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+    <tech.rory.mobilesafe.view.FocusedTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="手机卫士，牛逼啊!哈哈哈哈哈哈哈哈！手机卫士，牛逼啊!哈哈哈哈哈哈哈哈！手机卫士，牛逼啊!哈哈哈哈哈哈哈哈"
+        android:textSize="18sp" />
+
+    <GridView
+        android:id="@+id/gv_home"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="3"
+        android:verticalSpacing="20dp" >
+    </GridView>
 
 </LinearLayout>
