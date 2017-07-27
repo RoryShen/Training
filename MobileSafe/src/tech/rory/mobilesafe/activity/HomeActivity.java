@@ -7,6 +7,7 @@ import java.lang.annotation.Annotation;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,8 @@ public class HomeActivity extends Activity {
 
 				switch (position) {
 				case 8:
-					
+					// 满足条件时跳转到设置界面
+					startActivity(new Intent(HomeActivity.this, SettingActivity.class));
 				}
 			}
 		});
@@ -51,19 +53,16 @@ public class HomeActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return mItems.length;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return mItems[position];
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 

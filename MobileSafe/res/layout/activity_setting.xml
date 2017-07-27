@@ -9,39 +9,9 @@
         android:text="设置中心" >
     </TextView>
 
-    <RelativeLayout
+    <tech.rory.mobilesafe.view.SettingItemView
+        android:id="@+id/siv_update"
         android:layout_width="match_parent"
-        android:layout_height="70dp" 
-        android:padding="5dp
-        ">
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="自动更新设置"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
-        
-         <TextView
-             android:id="@+id/tv_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="自动更新已开启"
-            android:layout_below="@id/tv_title"
-            android:textColor="#a000"
-            android:layout_marginTop="3dp"
-            android:textSize="18sp" />
-         <CheckBox 
-             android:id="@+id/cd_status"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_centerVertical="true"
-             android:layout_alignParentRight="true"/>
-         <View android:layout_width="match_parent"
-             android:layout_height="0.2dp"
-             android:background="#a000"
-             android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

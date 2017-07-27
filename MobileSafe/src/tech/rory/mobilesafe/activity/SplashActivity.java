@@ -36,6 +36,7 @@ import android.app.AliasActivity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 
@@ -68,6 +69,7 @@ public class SplashActivity extends Activity {
 	private int mVersionCode;
 	private String mDesc;
 	private String mDownloadURL;
+	private int sleepTime = 5000;
 	private Handler mHanler = new Handler() {
 
 		public void handleMessage(android.os.Message msg) {
@@ -98,6 +100,7 @@ public class SplashActivity extends Activity {
 		}
 
 	};
+	private SharedPreferences mPreferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +109,15 @@ public class SplashActivity extends Activity {
 		tvVersion = (TextView) findViewById(R.id.tv_version);
 		tvVersion.setText("Version:" + getVersionName());
 		tvProgressTextView = (TextView) findViewById(R.id.tv_progress);
-		checkVersion();
+
+		mPreferences = getSharedPreferences("config", MODE_PRIVATE);
+		boolean autoUpdate = mPreferences.getBoolean("auto_update", true);
+		if (autoUpdate) {
+			checkVersion();
+		} else {
+			// 延迟5秒后发送一个空消息，确保app进入主页面
+			mHanler.sendEmptyMessageDelayed(CODE_ENTER_HOME, sleepTime);
+		}
 	}
 
 	private String getVersionName() {
@@ -242,9 +253,9 @@ public class SplashActivity extends Activity {
 					long timeUse = endTime - startTime;
 
 					// wait 2s for show splash page.
-					if (timeUse < 2000) {
+					if (timeUse < sleepTime) {
 						try {
-							Thread.sleep(2000 - timeUse);
+							Thread.sleep(sleepTime - timeUse);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -273,8 +284,8 @@ public class SplashActivity extends Activity {
 
 		// Set the message.
 		builder.setMessage(mDesc);
-		
-		//处理更新选项
+
+		// 处理更新选项
 		builder.setPositiveButton("Update NoW", new OnClickListener() {
 
 			@Override
@@ -284,8 +295,8 @@ public class SplashActivity extends Activity {
 
 			}
 		});
-		
-		//处理稍后选项
+
+		// 处理稍后选项
 		builder.setNegativeButton("Later", new OnClickListener() {
 
 			@Override
@@ -295,7 +306,7 @@ public class SplashActivity extends Activity {
 			}
 
 		});
-		
+
 		// 对取消操作进行处理
 		builder.setOnCancelListener(new OnCancelListener() {
 
@@ -340,13 +351,12 @@ public class SplashActivity extends Activity {
 
 					intent.addCategory(Intent.CATEGORY_DEFAULT);
 					intent.setDataAndType(Uri.fromFile(arg0.result), "application/vnd.android.package-archive");
-					//startActivity(intent);
-					
-					//get the result form activity.by call onActivityResult();
+					// startActivity(intent);
+
+					// get the result form activity.by call onActivityResult();
 					startActivityForResult(intent, 0);
-					
+
 				}
-				
 
 				@Override
 				public void onFailure(HttpException arg0, String arg1) {
@@ -367,8 +377,8 @@ public class SplashActivity extends Activity {
 		}
 
 	}
-	
-	//Get the result form activity
+
+	// Get the result form activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
