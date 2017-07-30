@@ -24,7 +24,11 @@ public class SettingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		// 把文字框显示出来
 		setContentView(R.layout.activity_setting);
+		
+		//得到SharePreferences.
 		mPreferences = getSharedPreferences("config", MODE_PRIVATE);
+		
+		//找到siv_update这个textview
 		sivUpdate = (SettingItemView) findViewById(R.id.siv_update);
 		sivUpdate.setTitle("自动更新设置");
 		// 设置自动更新的默认值
@@ -46,7 +50,8 @@ public class SettingActivity extends Activity {
 					// 设置为不勾选
 					sivUpdate.setChecked(false);
 					sivUpdate.setDesc("自动更新已关闭");
-					// 把自动更新配置保存到SharePreferences
+					
+					// 把自动更新配置保存到SharePreferences（编辑并提交）
 					mPreferences.edit().putBoolean("auto_update", false).commit();
 				} else {
 					sivUpdate.setChecked(true);

@@ -109,9 +109,13 @@ public class SplashActivity extends Activity {
 		tvVersion = (TextView) findViewById(R.id.tv_version);
 		tvVersion.setText("Version:" + getVersionName());
 		tvProgressTextView = (TextView) findViewById(R.id.tv_progress);
-
+		
+		// 拿到要读取数据的SharedPreferences.
 		mPreferences = getSharedPreferences("config", MODE_PRIVATE);
+		//读取自动更新项配置的值。
 		boolean autoUpdate = mPreferences.getBoolean("auto_update", true);
+		
+		//如果打开了自动更新，就检查版本信息，如果没有就直接进入主页面
 		if (autoUpdate) {
 			checkVersion();
 		} else {
