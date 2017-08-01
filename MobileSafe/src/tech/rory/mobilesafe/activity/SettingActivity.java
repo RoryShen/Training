@@ -30,14 +30,14 @@ public class SettingActivity extends Activity {
 		
 		//找到siv_update这个textview
 		sivUpdate = (SettingItemView) findViewById(R.id.siv_update);
-		sivUpdate.setTitle("自动更新设置");
+		//sivUpdate.setTitle("自动更新设置");
 		// 设置自动更新的默认值
 		boolean autoUpdate = mPreferences.getBoolean("auto_update", true);
 		if (autoUpdate) {
-			sivUpdate.setDesc("自动更新已开启");
+			//sivUpdate.setDesc("自动更新已开启");
 			sivUpdate.setChecked(true);
 		}else{
-			sivUpdate.setDesc("自动更新已关闭");
+			//sivUpdate.setDesc("自动更新已关闭");
 			sivUpdate.setChecked(false);
 		}
 

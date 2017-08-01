@@ -1,6 +1,7 @@
 package tech.rory.mobilesafe.view;
 
 import android.content.Context;
+import android.net.LocalSocketAddress.Namespace;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
@@ -17,18 +18,40 @@ import tech.rory.mobilesafe.R;
  */
 public class SettingItemView extends RelativeLayout {
 
+	// 定义Name space
+	private static final String NAMESPACE = "http://schemas.android.com/apk/res/tech.rory.mobilesafe";
 	private TextView tvTitle;
 	private TextView tvDesc;
 	private CheckBox cBox;
+	private String mTile;
+	private String mDescOn;
+	private String mDescOff;
 
 	public SettingItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initView();
+
 	}
 
 	public SettingItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		// 根据属性名称获取属性的值
+		mTile = attrs.getAttributeValue(NAMESPACE, "title");
+		//
+		mDescOn = attrs.getAttributeValue(NAMESPACE, "desc_on");
+		mDescOff = attrs.getAttributeValue(NAMESPACE, "desc_off");
 		initView();
+		// 获取attrs属性的数目
+		// int attributeCount = attrs.getAttributeCount();
+
+		// // 循环读取属性信息
+		// for (int i = 0; i < attributeCount; i++) {
+		// String attributeName = attrs.getAttributeName(i);
+		//
+		// String attributeValue = attrs.getAttributeValue(i);
+		// System.out.println(attributeName + "," + attributeValue);
+		// }
+
 	}
 
 	public SettingItemView(Context context) {
@@ -45,6 +68,8 @@ public class SettingItemView extends RelativeLayout {
 		tvTitle = (TextView) findViewById(R.id.tv_title);
 		tvDesc = (TextView) findViewById(R.id.tv_desc);
 		cBox = (CheckBox) findViewById(R.id.cb_status);
+		// 设置标题
+		setTitle(mTile);
 
 	}
 
@@ -70,9 +95,16 @@ public class SettingItemView extends RelativeLayout {
 
 	/**
 	 * 设置复选框的状态
+	 * 
 	 * @param checked
 	 */
 	public void setChecked(boolean checked) {
 		cBox.setChecked(checked);
+		// 根据选择框状态，更新文本描述
+		if (checked) {
+			setDesc(mDescOn);
+		} else {
+			setDesc(mDescOff);
+		}
 	}
 }
