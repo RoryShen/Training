@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import tech.rory.mobilesafe.R;
 import tech.rory.mobilesafe.view.SettingItemView;
 
@@ -18,6 +19,7 @@ public class SettingActivity extends Activity {
 
 	private SettingItemView sivUpdate;
 	private SharedPreferences mPreferences;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class SettingActivity extends Activity {
 		}else{
 			//sivUpdate.setDesc("自动更新已关闭");
 			sivUpdate.setChecked(false);
+			
 		}
 
 		sivUpdate.setOnClickListener(new OnClickListener() {

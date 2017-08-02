@@ -47,6 +47,8 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +72,7 @@ public class SplashActivity extends Activity {
 	private String mDesc;
 	private String mDownloadURL;
 	private int sleepTime = 5000;
+	private RelativeLayout rlRoot;// 根布局
 	private Handler mHanler = new Handler() {
 
 		public void handleMessage(android.os.Message msg) {
@@ -109,19 +112,29 @@ public class SplashActivity extends Activity {
 		tvVersion = (TextView) findViewById(R.id.tv_version);
 		tvVersion.setText("Version:" + getVersionName());
 		tvProgressTextView = (TextView) findViewById(R.id.tv_progress);
-		
+
 		// 拿到要读取数据的SharedPreferences.
 		mPreferences = getSharedPreferences("config", MODE_PRIVATE);
-		//读取自动更新项配置的值。
+		// 读取自动更新项配置的值。
 		boolean autoUpdate = mPreferences.getBoolean("auto_update", true);
 		
-		//如果打开了自动更新，就检查版本信息，如果没有就直接进入主页面
+		rlRoot = (RelativeLayout) findViewById(R.id.rl_root);
+
+		// 如果打开了自动更新，就检查版本信息，如果没有就直接进入主页面
 		if (autoUpdate) {
 			checkVersion();
 		} else {
 			// 延迟5秒后发送一个空消息，确保app进入主页面
 			mHanler.sendEmptyMessageDelayed(CODE_ENTER_HOME, sleepTime);
 		}
+		// 设置动画效果
+		
+		//设置变化范围
+		AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1f);
+		alphaAnimation.setDuration(sleepTime);
+		//在哪个控件上开始动画
+		rlRoot.startAnimation(alphaAnimation);
+
 	}
 
 	private String getVersionName() {
