@@ -1,6 +1,7 @@
 package tech.rory.mobilesafe.activity;
 
 import tech.rory.mobilesafe.R;
+import tech.rory.mobilesafe.utils.Md5Utils;
 
 import java.lang.annotation.Annotation;
 
@@ -29,11 +30,14 @@ import android.widget.Toast;
 
 public class HomeActivity extends Activity {
 	private GridView gvHome;
-	private String[] mItems = new String[] { "手机防盗", "通讯卫士", "软件管理", "进程管理", "流量统计", "手机杀毒", "缓存清理", "高级工具", "设置中心" };
+	private String[] mItems = new String[] { "手机防盗", "通讯卫士", "软件管理", "进程管理",
+			"流量统计", "手机杀毒", "缓存清理", "高级工具", "设置中心" };
 
-	private int[] mPics = new int[] { R.drawable.home_safe, R.drawable.home_callmsgsafe, R.drawable.home_apps,
-			R.drawable.home_taskmanager, R.drawable.home_netmanager, R.drawable.home_trojan,
-			R.drawable.home_sysoptimize, R.drawable.home_tools, R.drawable.home_settings };
+	private int[] mPics = new int[] { R.drawable.home_safe,
+			R.drawable.home_callmsgsafe, R.drawable.home_apps,
+			R.drawable.home_taskmanager, R.drawable.home_netmanager,
+			R.drawable.home_trojan, R.drawable.home_sysoptimize,
+			R.drawable.home_tools, R.drawable.home_settings };
 	private SharedPreferences sharedPreferences;
 
 	@Override
@@ -48,7 +52,8 @@ public class HomeActivity extends Activity {
 		gvHome.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 
 				switch (position) {
 				case 0:
@@ -57,7 +62,8 @@ public class HomeActivity extends Activity {
 					break;
 				case 8:
 					// 满足条件时跳转到设置界面
-					startActivity(new Intent(HomeActivity.this, SettingActivity.class));
+					startActivity(new Intent(HomeActivity.this,
+							SettingActivity.class));
 					break;
 				}
 			}
@@ -85,7 +91,8 @@ public class HomeActivity extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = View.inflate(HomeActivity.this, R.layout.home_list_item, null);
+			View view = View.inflate(HomeActivity.this,
+					R.layout.home_list_item, null);
 			ImageView ivItem = (ImageView) view.findViewById(R.id.iv_item);
 			TextView tvItem = (TextView) view.findViewById(R.id.tv_item);
 			tvItem.setText(mItems[position]);
@@ -123,7 +130,8 @@ public class HomeActivity extends Activity {
 		dialog.setView(view, 0, 0, 0, 0);
 		// 拿到
 
-		final EditText etPassword = (EditText) view.findViewById(R.id.et_input_password);
+		final EditText etPassword = (EditText) view
+				.findViewById(R.id.et_input_password);
 		// 为弹框设置事件监听
 
 		// 找到OK按钮
@@ -137,17 +145,25 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				// 拿到用户输入的密码，
 
-				String passworrd = etPassword.getText().toString();
-				if (!TextUtils.isEmpty(passworrd)) {
-					String savedpassword = sharedPreferences.getString("password", null);
-					if (passworrd.equals(savedpassword)) {
-						Toast.makeText(HomeActivity.this, "登陆成功！", Toast.LENGTH_SHORT).show();
+				String password = etPassword.getText().toString();
+				if (!TextUtils.isEmpty(password)) {
+					String savedpassword = sharedPreferences.getString(
+							"password", null);
+					if (Md5Utils.encode(password).equals(savedpassword)) {
+//						Toast.makeText(HomeActivity.this, "登陆成功！",
+//								Toast.LENGTH_SHORT).show();
 						dialog.dismiss();
+
+						// 跳转到手机防盗页
+						startActivity(new Intent(HomeActivity.this,
+								LostFindActivity.class));
 					} else {
-						Toast.makeText(HomeActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
+						Toast.makeText(HomeActivity.this, "密码错误！",
+								Toast.LENGTH_SHORT).show();
 					}
 				} else {
-					Toast.makeText(HomeActivity.this, "输入框内容不能为空！", Toast.LENGTH_SHORT).show();
+					Toast.makeText(HomeActivity.this, "输入框内容不能为空！",
+							Toast.LENGTH_SHORT).show();
 				}
 
 			}
@@ -179,8 +195,10 @@ public class HomeActivity extends Activity {
 		// 把视图内容塞到dialog中（即，让布局文件显示自定义的视图），同时设置边距
 		dialog.setView(view, 0, 0, 0, 0);
 		// 拿到两次的密码框
-		final EditText etPassword = (EditText) view.findViewById(R.id.et_password);
-		final EditText etPasswordConfirm = (EditText) view.findViewById(R.id.et_password_confirm);
+		final EditText etPassword = (EditText) view
+				.findViewById(R.id.et_password);
+		final EditText etPasswordConfirm = (EditText) view
+				.findViewById(R.id.et_password_confirm);
 		// 为弹框设置事件监听
 
 		// 找到OK按钮
@@ -194,19 +212,29 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				// 拿到用户输入的密码，
 				String password = etPassword.getText().toString();
-				String passworrdConfirm = etPasswordConfirm.getText().toString();
+				String passworrdConfirm = etPasswordConfirm.getText()
+						.toString();
 
 				if (!TextUtils.isEmpty(password) && !passworrdConfirm.isEmpty()) {
 					if (password.equals(passworrdConfirm)) {
-						Toast.makeText(HomeActivity.this, "登陆成功！", Toast.LENGTH_SHORT).show();
+//						Toast.makeText(HomeActivity.this, "登陆成功！",
+//								Toast.LENGTH_SHORT).show();
 						// 把密码放到sharePreferences里，然后提交
-						sharedPreferences.edit().putString("password", password).commit();
+						sharedPreferences
+								.edit()
+								.putString("password",
+										Md5Utils.encode(password)).commit();
 						dialog.dismiss();
+						// 跳转到手机防盗页
+						startActivity(new Intent(HomeActivity.this,
+								LostFindActivity.class));
 					} else {
-						Toast.makeText(HomeActivity.this, "两次密码不一致！！", Toast.LENGTH_SHORT).show();
+						Toast.makeText(HomeActivity.this, "两次密码不一致！！",
+								Toast.LENGTH_SHORT).show();
 					}
 				} else {
-					Toast.makeText(HomeActivity.this, "输入框内容不能为空!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(HomeActivity.this, "输入框内容不能为空!",
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
