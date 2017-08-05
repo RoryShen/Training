@@ -17,5 +17,6 @@ public class Setup1Activity extends Activity {
 		// 跳转到下一页面
 		startActivity(new Intent(this, Setup2Activity.class));
 		finish();
+		overridePendingTransition(R.anim.tran_in, R.anim.tran_out);
 	}
 }
