@@ -24,7 +24,7 @@ public class Setup3Activity extends BaseSetupActivity {
 	@Override
 	public void showPreviousPage() {
 		// 跳转到下一页面
-		startActivity(new Intent(this, Setup3Activity.class));
+		startActivity(new Intent(this, Setup2Activity.class));
 		finish();
 		overridePendingTransition(R.anim.prevtran_in, R.anim.prevtran_out);
 
