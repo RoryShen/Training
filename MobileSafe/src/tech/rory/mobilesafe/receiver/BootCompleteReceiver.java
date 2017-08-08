@@ -1,4 +1,4 @@
-package receiver;
+package tech.rory.mobilesafe.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.widget.Toast;
+import android.util.Log;
 
 /*
  * 监听开机重启的广播
@@ -24,11 +24,14 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 			TelephonyManager tManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			String currentSIM = tManager.getSimSerialNumber();
 			if (sim.equals(currentSIM)) {
-				System.out.println("手机安全！");
-				Toast.makeText(context, "手机安全！", Toast.LENGTH_SHORT).show();
+			//	Log.e("SIM342", "手机很安全");
+//				Toast.makeText(context, "手机安全！", Toast.LENGTH_SHORT).show();
 			} else {
-				System.out.println("Sim卡发生变化，发送报警短信");
+				//Log.e("SIM342", "Sim卡发生变化，发送报警短信");
+//				System.out.println("Sim卡发生变化，发送报警短信");
 			}
+		}else{
+			//Log.e("SIM342", "Sim");
 		}
 	}
 

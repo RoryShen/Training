@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 
 public class Setup4Activity extends BaseSetupActivity {
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setup4);
-	
+
 	}
 
 	@Override
@@ -23,6 +22,7 @@ public class Setup4Activity extends BaseSetupActivity {
 		startActivity(new Intent(this, LostFindActivity.class));
 		finish();
 		overridePendingTransition(R.anim.tran_in, R.anim.tran_out);
+		sharedPreferences.edit().putBoolean("configed", true).commit();
 	}
 
 	@Override
