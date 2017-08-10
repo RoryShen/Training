@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
+
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,8 +20,8 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 		// 开机后读取sim卡状态
 		SharedPreferences sharedPreferences = context.getSharedPreferences("config", Context.MODE_PRIVATE);
 		boolean protect = sharedPreferences.getBoolean("protect", false);
-		
-		//只有防盗保护开启的情况下才需要做如下处理
+
+		// 只有防盗保护开启的情况下才需要做如下处理
 		if (protect) {
 			// 获取绑定的sim卡
 			String sim = sharedPreferences.getString("sim", null);
@@ -28,16 +30,14 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 				TelephonyManager tManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 				String currentSIM = tManager.getSimSerialNumber();
 				if (sim.equals(currentSIM)) {
-					// Log.e("SIM342", "手机很安全");
-					// Toast.makeText(context, "手机安全！",
-					// Toast.LENGTH_SHORT).show();
+
 				} else {
-					// Log.e("SIM342", "Sim卡发生变化，发送报警短信");
-					// System.out.println("Sim卡发生变化，发送报警短信");
+					String phoneNumber = sharedPreferences.getString("safe_phone", "")+"123";
+					SmsManager smsManager = SmsManager.getDefault();
+					smsManager.sendTextMessage(phoneNumber, null, "SIM Card Changed!", null, null);
 				}
-			} else {
-				// Log.e("SIM342", "Sim");
 			}
+
 		}
 
 	}
