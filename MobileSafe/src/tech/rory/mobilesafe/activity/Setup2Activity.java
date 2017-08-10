@@ -1,9 +1,12 @@
 package tech.rory.mobilesafe.activity;
 
 import tech.rory.mobilesafe.R;
+import tech.rory.mobilesafe.utils.ToastUtils;
 import tech.rory.mobilesafe.view.SettingItemView;
 
 import java.lang.annotation.Annotation;
+
+import org.w3c.dom.Text;
 
 import com.lidroid.xutils.view.annotation.event.OnChildClick;
 
@@ -59,6 +62,13 @@ public class Setup2Activity extends BaseSetupActivity {
 
 	@Override
 	public void showNextPage() {
+		// 先判断SIM卡是否绑定了，如果SIM卡没有绑定，则不进入下一个页面
+		String sim = sharedPreferences.getString("sim", null);
+		if (TextUtils.isEmpty(sim)) {
+			ToastUtils.showToast(this, "请先绑定sim卡");
+			return;
+		}
+
 		// 跳转到下一页面
 		startActivity(new Intent(this, Setup3Activity.class));
 		finish();

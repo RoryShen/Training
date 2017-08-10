@@ -41,7 +41,9 @@ public class ContactsActivity extends Activity {
 						"phone");
 				Intent intent = new Intent();
 				intent.putExtra("phone", phoneString);
-				setResult(0, intent);// 将数据放在intent中返回给上一个页面
+				
+				// 将数据放在intent中返回给上一个页面,把结果码设置为OK
+				setResult(RESULT_OK, intent);
 				finish();
 			}
 		});
