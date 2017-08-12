@@ -278,7 +278,7 @@ public class SplashActivity extends Activity {
 						}
 
 					}
-					System.out.println("AAAA" + timeUse);
+					//System.out.println("AAAA" + timeUse);
 					mHanler.sendMessage(message);
 					if (openConnection != null) {
 						openConnection.disconnect();

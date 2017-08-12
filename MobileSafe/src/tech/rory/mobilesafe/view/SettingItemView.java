@@ -1,11 +1,9 @@
 package tech.rory.mobilesafe.view;
 
 import android.content.Context;
-import android.net.LocalSocketAddress.Namespace;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import tech.rory.mobilesafe.R;
