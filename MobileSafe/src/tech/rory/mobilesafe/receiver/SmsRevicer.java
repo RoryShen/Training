@@ -39,8 +39,8 @@ public class SmsRevicer extends BroadcastReceiver {
 				context.startService(new Intent(context, LocationService.class));
 				SharedPreferences sharedPreferences = context.getSharedPreferences("config", context.MODE_PRIVATE);
 				String location = sharedPreferences.getString("location", "Get Location....");
-				System.out.println("Location:"+location);
-
+				//System.out.println("Location:" + location);
+				abortBroadcast();// 中断短信传递，系统就收不到短信了
 			}
 		}
 	}

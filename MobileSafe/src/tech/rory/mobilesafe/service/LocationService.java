@@ -45,7 +45,7 @@ public class LocationService extends Service {
 		// System.out.println(bestLocation);
 		// 参数1：位置提供类型，参数2，最短更新时间，参数3：最短更新距离，参数4：listener
 		listener = new MyLocationListener();
-		lm.requestLocationUpdates(bestLocation, 60, 0, listener);
+		lm.requestLocationUpdates(bestLocation, 0, 0, listener);
 
 	}
 
@@ -66,6 +66,8 @@ public class LocationService extends Service {
 							"location",
 							"经度" + location.getLatitude() + ";" + "经度"
 									+ location.getLongitude()).commit();
+			//停止服务
+			stopSelf();
 			Log.e("Location",
 					location.getLatitude() + ";" + location.getLongitude());
 
@@ -94,6 +96,7 @@ public class LocationService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		lm.removeUpdates(listener);
 		lm.removeUpdates(listener);
 	}
 }
