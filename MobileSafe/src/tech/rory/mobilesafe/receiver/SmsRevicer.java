@@ -2,7 +2,6 @@ package tech.rory.mobilesafe.receiver;
 
 import tech.rory.mobilesafe.R;
 import tech.rory.mobilesafe.service.LocationService;
-import android.R.string;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,8 +38,8 @@ public class SmsRevicer extends BroadcastReceiver {
 				// 开启一个服务
 				context.startService(new Intent(context, LocationService.class));
 				SharedPreferences sharedPreferences = context.getSharedPreferences("config", context.MODE_PRIVATE);
-				String location = sharedPreferences.getString("location", "");
-				System.out.println("Location"+location);
+				String location = sharedPreferences.getString("location", "Get Location....");
+				System.out.println("Location:"+location);
 
 			}
 		}
