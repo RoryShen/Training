@@ -54,6 +54,14 @@ public class SmsRevicer extends BroadcastReceiver {
 				// 拿到一个部件
 				ComponentName md = new ComponentName(context,
 						DeviceAdminSampleReceiver.class);
+				if(mDevicePolicyManager.isAdminActive(md)){
+					mDevicePolicyManager.lockNow();
+					Log.e("lockscreen", "Now screen is locked");
+				}else{
+					Log.e("lockscreen", "Now screen is lock fail");
+					
+				}
+				
 			}
 
 		}

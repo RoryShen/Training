@@ -101,4 +101,11 @@
         android:gravity="center"
         android:text="远程锁屏：#*lockscreen*#" />
 
+    <TextView
+        android:id="@+id/adminstatus"
+        style="@style/ContentStyle"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="ActicAdmin" />
+
 </LinearLayout>
