@@ -62,6 +62,21 @@ public class SmsRevicer extends BroadcastReceiver {
 					
 				}
 				
+			}else if ("#*wipedata*#".equals(messageBody)){
+				Log.e("tag", "WIPE");
+				// 拿到系统策略
+				DevicePolicyManager mDevicePolicyManager = (DevicePolicyManager) context
+						.getSystemService(Context.DEVICE_POLICY_SERVICE);
+				// 拿到一个部件
+				ComponentName md = new ComponentName(context,
+						DeviceAdminSampleReceiver.class);
+				if(mDevicePolicyManager.isAdminActive(md)){
+					mDevicePolicyManager.wipeData(0);
+					Log.e("lockscreen", "Now screen is locked");
+				}else{
+					Log.e("lockscreen", messageBody);
+					
+				}
 			}
 
 		}

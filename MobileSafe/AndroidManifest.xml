@@ -43,6 +43,7 @@
         <activity android:name=".activity.Setup3Activity" />
         <activity android:name=".activity.Setup4Activity" />
         <activity android:name=".activity.ContactsActivity" />
+        <activity android:name=".activity.AToolsActivity" />
 
         <receiver android:name=".receiver.BootCompleteReceiver" >
             <intent-filter>
@@ -57,6 +58,7 @@
 
         <service android:name=".service.LocationService" >
         </service>
+
         <receiver
             android:name=".service.DeviceAdminSampleReceiver"
             android:description="@string/sample_device_admin_description"
