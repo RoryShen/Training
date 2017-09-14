@@ -26,8 +26,7 @@ public class SmsRevicer extends BroadcastReceiver {
 			SmsMessage message = SmsMessage.createFromPdu((byte[]) object);
 			String originatingAddress = message.getOriginatingAddress();
 			String messageBody = message.getMessageBody();
-			Log.i("SMSReciver", "Phone Number:" + originatingAddress
-					+ ", Message:" + messageBody);
+			Log.i("SMSReciver", "Phone Number:" + originatingAddress + ", Message:" + messageBody);
 			if ("#*alarm*#".equals(messageBody)) {
 				// 创建一个播放器
 				MediaPlayer player = MediaPlayer.create(context, R.raw.ylzs);
@@ -41,10 +40,8 @@ public class SmsRevicer extends BroadcastReceiver {
 			} else if ("#*location*#".equals(messageBody)) {
 				// 开启一个服务
 				context.startService(new Intent(context, LocationService.class));
-				SharedPreferences sharedPreferences = context
-						.getSharedPreferences("config", context.MODE_PRIVATE);
-				String location = sharedPreferences.getString("location",
-						"Get Location....");
+				SharedPreferences sharedPreferences = context.getSharedPreferences("config", context.MODE_PRIVATE);
+				String location = sharedPreferences.getString("location", "Get Location....");
 				// System.out.println("Location:" + location);
 				abortBroadcast();// 中断短信传递，系统就收不到短信了
 			} else if ("#*lockscreen*#".equals(messageBody)) {
@@ -52,30 +49,28 @@ public class SmsRevicer extends BroadcastReceiver {
 				DevicePolicyManager mDevicePolicyManager = (DevicePolicyManager) context
 						.getSystemService(Context.DEVICE_POLICY_SERVICE);
 				// 拿到一个部件
-				ComponentName md = new ComponentName(context,
-						DeviceAdminSampleReceiver.class);
-				if(mDevicePolicyManager.isAdminActive(md)){
+				ComponentName md = new ComponentName(context, DeviceAdminSampleReceiver.class);
+				if (mDevicePolicyManager.isAdminActive(md)) {
 					mDevicePolicyManager.lockNow();
 					Log.e("lockscreen", "Now screen is locked");
-				}else{
+				} else {
 					Log.e("lockscreen", "Now screen is lock fail");
-					
+
 				}
-				
-			}else if ("#*wipedata*#".equals(messageBody)){
+
+			} else if ("#*wipedata*#".equals(messageBody)) {
 				Log.e("tag", "WIPE");
 				// 拿到系统策略
 				DevicePolicyManager mDevicePolicyManager = (DevicePolicyManager) context
 						.getSystemService(Context.DEVICE_POLICY_SERVICE);
 				// 拿到一个部件
-				ComponentName md = new ComponentName(context,
-						DeviceAdminSampleReceiver.class);
-				if(mDevicePolicyManager.isAdminActive(md)){
+				ComponentName md = new ComponentName(context, DeviceAdminSampleReceiver.class);
+				if (mDevicePolicyManager.isAdminActive(md)) {
 					mDevicePolicyManager.wipeData(0);
 					Log.e("lockscreen", "Now screen is locked");
-				}else{
+				} else {
 					Log.e("lockscreen", messageBody);
-					
+
 				}
 			}
 

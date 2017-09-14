@@ -57,7 +57,7 @@ public class LostFindActivity extends Activity {
 			md = new ComponentName(this, DeviceAdminSampleReceiver.class);
 
 			boolean adminstatus = sharedPreferences.getBoolean("admin", false);
-			//ToastUtils.showToast(this, adminstatus + "AA");
+			// ToastUtils.showToast(this, adminstatus + "AA");
 			if (adminstatus) {
 				tadmin.setText("已经激活了超级管理，一切工作正常的哦");
 			} else {

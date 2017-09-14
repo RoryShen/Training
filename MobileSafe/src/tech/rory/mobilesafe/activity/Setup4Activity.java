@@ -22,8 +22,8 @@ public class Setup4Activity extends BaseSetupActivity {
 
 		setContentView(R.layout.activity_setup4);
 		cbprotect = (CheckBox) findViewById(R.id.cb_protect);
-		
-		//读取当前手机防盗状态
+
+		// 读取当前手机防盗状态
 		boolean protect = sharedPreferences.getBoolean("protect", false);
 		if (protect) {
 			cbprotect.setText("防盗保护已经开启！");

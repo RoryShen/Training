@@ -28,20 +28,17 @@ public class ContactsActivity extends Activity {
 		lView = (ListView) findViewById(R.id.lv_list);
 		readcontactsArrayList = readContacts();
 		// System.out.println("AAAA" + readcontactsArrayList);
-		lView.setAdapter(new SimpleAdapter(this, readcontactsArrayList,
-				R.layout.contacts_list_item, new String[] { "name", "phone" },
-				new int[] { R.id.tv_name, R.id.tv_phone }));
+		lView.setAdapter(new SimpleAdapter(this, readcontactsArrayList, R.layout.contacts_list_item,
+				new String[] { "name", "phone" }, new int[] { R.id.tv_name, R.id.tv_phone }));
 		lView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// 拿到当前Item的电话号码
-				String phoneString = readcontactsArrayList.get(position).get(
-						"phone");
+				String phoneString = readcontactsArrayList.get(position).get("phone");
 				Intent intent = new Intent();
 				intent.putExtra("phone", phoneString);
-				
+
 				// 将数据放在intent中返回给上一个页面,把结果码设置为OK
 				setResult(RESULT_OK, intent);
 				finish();
@@ -56,12 +53,10 @@ public class ContactsActivity extends Activity {
 		// 然后，根据mimetype来区分，哪个是联系人，哪个是电话号码
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		// 指定contast的uri地址
-		Uri rawContactsUri = Uri
-				.parse("content://com.android.contacts/raw_contacts");
+		Uri rawContactsUri = Uri.parse("content://com.android.contacts/raw_contacts");
 		Uri rawDataUri = Uri.parse("content://com.android.contacts/data");
 		// 拿到查询的cursor
-		Cursor rawCursor = getContentResolver().query(rawContactsUri,
-				new String[] { "contact_id" }, null, null, null);
+		Cursor rawCursor = getContentResolver().query(rawContactsUri, new String[] { "contact_id" }, null, null, null);
 
 		// 如果cursor不为空，则读取里面的内容
 		if (rawCursor != null) {
@@ -70,9 +65,8 @@ public class ContactsActivity extends Activity {
 				String contactIdString = rawCursor.getString(0);
 
 				// 根据ID信息去获取联系人的相关数据
-				Cursor dataCursor = getContentResolver().query(rawDataUri,
-						new String[] { "data1", "mimetype" }, "contact_id=?",
-						new String[] { contactIdString }, null);
+				Cursor dataCursor = getContentResolver().query(rawDataUri, new String[] { "data1", "mimetype" },
+						"contact_id=?", new String[] { contactIdString }, null);
 				if (dataCursor != null) {
 					HashMap<String, String> map = new HashMap<String, String>();
 					while (dataCursor.moveToNext()) {
@@ -81,8 +75,7 @@ public class ContactsActivity extends Activity {
 
 						if ("vnd.android.cursor.item/phone_v2".equals(mimetpye)) {
 							map.put("phone", data1);
-						} else if ("vnd.android.cursor.item/name"
-								.equals(mimetpye)) {
+						} else if ("vnd.android.cursor.item/name".equals(mimetpye)) {
 							map.put("name", data1);
 						}
 					}

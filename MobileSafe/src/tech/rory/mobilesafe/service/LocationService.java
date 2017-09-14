@@ -60,16 +60,12 @@ public class LocationService extends Service {
 			// tvLocation.setText(latitude + "\n" + longitude/ + "\n" + accuracy
 			// + "\n" + altiude);
 			// 把经纬度保存起来
-			sharedPreferences
-					.edit()
-					.putString(
-							"location",
-							"经度" + location.getLatitude() + ";" + "经度"
-									+ location.getLongitude()).commit();
-			//停止服务
+			sharedPreferences.edit()
+					.putString("location", "经度" + location.getLatitude() + ";" + "经度" + location.getLongitude())
+					.commit();
+			// 停止服务
 			stopSelf();
-			Log.e("Location",
-					location.getLatitude() + ";" + location.getLongitude());
+			Log.e("Location", location.getLatitude() + ";" + location.getLongitude());
 
 		}
 

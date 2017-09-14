@@ -20,28 +20,27 @@ public class SettingActivity extends Activity {
 	private SettingItemView sivUpdate;
 	private SharedPreferences mPreferences;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// 把文字框显示出来
 		setContentView(R.layout.activity_setting);
-		
-		//得到SharePreferences.
+
+		// 得到SharePreferences.
 		mPreferences = getSharedPreferences("config", MODE_PRIVATE);
-		
-		//找到siv_update这个textview
+
+		// 找到siv_update这个textview
 		sivUpdate = (SettingItemView) findViewById(R.id.siv_update);
-		//sivUpdate.setTitle("自动更新设置");
+		// sivUpdate.setTitle("自动更新设置");
 		// 设置自动更新的默认值
 		boolean autoUpdate = mPreferences.getBoolean("auto_update", true);
 		if (autoUpdate) {
-			//sivUpdate.setDesc("自动更新已开启");
+			// sivUpdate.setDesc("自动更新已开启");
 			sivUpdate.setChecked(true);
-		}else{
-			//sivUpdate.setDesc("自动更新已关闭");
+		} else {
+			// sivUpdate.setDesc("自动更新已关闭");
 			sivUpdate.setChecked(false);
-			
+
 		}
 
 		sivUpdate.setOnClickListener(new OnClickListener() {
@@ -53,7 +52,7 @@ public class SettingActivity extends Activity {
 					// 设置为不勾选
 					sivUpdate.setChecked(false);
 					sivUpdate.setDesc("自动更新已关闭");
-					
+
 					// 把自动更新配置保存到SharePreferences（编辑并提交）
 					mPreferences.edit().putBoolean("auto_update", false).commit();
 				} else {

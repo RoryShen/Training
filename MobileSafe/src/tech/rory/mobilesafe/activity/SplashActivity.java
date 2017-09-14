@@ -1,6 +1,7 @@
 package tech.rory.mobilesafe.activity;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -30,6 +31,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager.OnActivityResultListener;
+import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AliasActivity;
@@ -117,8 +119,10 @@ public class SplashActivity extends Activity {
 		mPreferences = getSharedPreferences("config", MODE_PRIVATE);
 		// 读取自动更新项配置的值。
 		boolean autoUpdate = mPreferences.getBoolean("auto_update", true);
-		
+
 		rlRoot = (RelativeLayout) findViewById(R.id.rl_root);
+		// Copy the data base.
+		copyDB("address.db");
 
 		// 如果打开了自动更新，就检查版本信息，如果没有就直接进入主页面
 		if (autoUpdate) {
@@ -128,11 +132,11 @@ public class SplashActivity extends Activity {
 			mHanler.sendEmptyMessageDelayed(CODE_ENTER_HOME, sleepTime);
 		}
 		// 设置动画效果
-		
-		//设置变化范围
+
+		// 设置变化范围
 		AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1f);
 		alphaAnimation.setDuration(sleepTime);
-		//在哪个控件上开始动画
+		// 在哪个控件上开始动画
 		rlRoot.startAnimation(alphaAnimation);
 
 	}
@@ -278,7 +282,7 @@ public class SplashActivity extends Activity {
 						}
 
 					}
-					//System.out.println("AAAA" + timeUse);
+					// System.out.println("AAAA" + timeUse);
 					mHanler.sendMessage(message);
 					if (openConnection != null) {
 						openConnection.disconnect();
@@ -400,5 +404,42 @@ public class SplashActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		enterHome();
+	}
+
+	// 拷贝数据库到特定目录
+	private void copyDB(String dbName) {
+		// 要拷贝的目标地址
+		File destFile = new File(getFilesDir(), dbName);
+		if (destFile.exists()) {
+			Log.i("copyData", "数据库" + dbName + "已经存在了！");
+			return;
+		}
+		FileOutputStream outputStream = null;
+		InputStream in = null;
+		try {
+			in = getAssets().open(dbName);
+			outputStream = new FileOutputStream(destFile);
+			int len = 0;
+			byte[] buffer = new byte[1024];
+			while ((len = in.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, len);
+
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			try {
+				in.close();
+				outputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 }

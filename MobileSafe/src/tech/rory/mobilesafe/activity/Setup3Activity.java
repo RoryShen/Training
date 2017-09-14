@@ -19,9 +19,9 @@ public class Setup3Activity extends BaseSetupActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setup3);
 		etphoneEditText = (EditText) findViewById(R.id.et_phone);
-		
-		//读取保存的安全联系人
-		String phone=sharedPreferences.getString("safe_phone", "");
+
+		// 读取保存的安全联系人
+		String phone = sharedPreferences.getString("safe_phone", "");
 		etphoneEditText.setText(phone);
 	}
 
