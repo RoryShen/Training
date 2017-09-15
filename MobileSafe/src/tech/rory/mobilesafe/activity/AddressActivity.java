@@ -2,6 +2,7 @@ package tech.rory.mobilesafe.activity;
 
 import tech.rory.mobilesafe.R;
 import tech.rory.mobilesafe.db.dao.AddressDao;
+import tech.rory.mobilesafe.utils.ToastUtils;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ public class AddressActivity extends Activity {
 		if (!TextUtils.isEmpty(number)) {
 			String address = AddressDao.getAddress(number);
 			tvResult.setText(address);
+			// ToastUtils.showToast(this, number);
 
 		}
 
